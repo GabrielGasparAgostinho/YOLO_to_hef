@@ -65,7 +65,7 @@ chmod 777 "$tmp_out"
 
 # Comando Docker (Monta a raiz para o dataset, monta a pasta de logs para o ONNX, e mapeia a saida temporária)
 docker run --rm -v "$WORKDIR:/workdir:ro" -v "$LOG_DIR:/log_in:ro" -v "$tmp_out:/tmp_out" -w /tmp_out "$DOCKER_IMAGE" bash -c "
-    echo 'allocator_param(timeout=0)' >> /local/workspace/hailo_model_zoo/hailo_model_zoo/cfg/alls/generic/${ARCH}.alls || true
+    echo 'allocator_param(timeout=48h)' >> /local/workspace/hailo_model_zoo/hailo_model_zoo/cfg/alls/generic/${ARCH}.alls || true
     hailomz compile $ARCH --hw-arch hailo8l --ckpt '/log_in/${NET_NAME}.onnx' --calib-path '/workdir/${CALIB_PATH}' --classes $CLASSES --performance
 " > "$LOG_DIR/hailomz.log" 2>&1
 
